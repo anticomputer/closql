@@ -32,7 +32,7 @@
 ;;; Code:
 
 (require 'eieio)
-(require 'emacsql-sqlite)
+(require 'emacsql-sqlite3)
 
 (eval-when-compile (require 'subr-x))
 
@@ -258,7 +258,7 @@
 
 ;;; Database
 
-(defclass closql-database (emacsql-sqlite-connection)
+(defclass closql-database (emacsql-sqlite3-connection)
   ((object-class :allocation :class)))
 
 (cl-defmethod closql-db ((class (subclass closql-database))
@@ -267,7 +267,6 @@
         (and db (emacsql-live-p db) db))
       (let ((db-init (not (and file (file-exists-p file))))
             (db (make-instance class :file file)))
-        (set-process-query-on-exit-flag (oref db process) nil)
         (when debug
           (emacsql-enable-debugging db))
         (when db-init
